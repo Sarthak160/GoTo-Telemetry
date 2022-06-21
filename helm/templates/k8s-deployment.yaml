@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment                 
+metadata:
+  name: {{ .Values.app.metadata.name }}  
+  labels: 
+    app: {{ .Values.app.name }}      
+spec:
+  replicas: {{ .Values.replicaCount }}                    
+  selector:
+    matchLabels:
+      app: {{ .Values.app.name }}       
+  template:                     
+    metadata:
+      labels:                   
+        app: {{ .Values.app.name }} 
+    spec:                        
+      containers:
+      - name: {{ .Values.app.name }}
+        image: {{ .Values.app.image }} 
+        ports:
+          - containerPort: {{ .Values.port.containerPort}}  
+        env: 
+        - name: TELEMETRY_MONGO_URI
+          value: {{ .Values.env.database.mongo.uri }}
+
+
+
+---
+
+apiVersion: v1
+kind: Service    
+metadata:               
+  name: {{ .Values.app.metadata.name}}
+spec:         
+  type: {{ .Values.service.type }}
+  selector:
+    app: {{ include "kanalytics.name" .}} 
+  ports:                         
+  - name: http
+    port: {{ .Values.service.port}}
+    targetPort: {{ .Values.port.containerPort}}

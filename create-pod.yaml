@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+   name: ping-analytics
+spec:
+   containers:
+   - name: analtyics
+     image: retick10/ping-analytics:latest
+     ports:
+     - containerPort: 3030

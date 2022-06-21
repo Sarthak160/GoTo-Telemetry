@@ -1,0 +1,8 @@
+version: '3'
+services:
+  analytics-server:
+    image: retick10/ping-analytics:latest-1654068111
+    ports:
+      - "3030:3030"
+    environment:
+      - TELEMETRY_MONGO_URI=mongodb+srv://admin-rgs:rgs123@cluster0.jfiow.mongodb.net/Analytics?retryWrites=true&w=majority

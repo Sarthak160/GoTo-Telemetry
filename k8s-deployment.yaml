@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment                 
+metadata:
+  name: ping-analytics     
+  labels: 
+    app: analytics-server      
+spec:
+  replicas: 3                    
+  selector:
+    matchLabels:
+      app: analytics-server       
+  template:                     
+    metadata:
+      labels:                   
+        app: analytics-server 
+    spec:                        
+      containers:
+      - name: analytics-server
+        image: retick10/ping-analytics:latest-1654068111
+        ports:
+          - containerPort: 3030  
+        env: 
+        - name: TELEMETRY_MONGO_URI
+          value: mongodb+srv://admin-rgs:rgs123@cluster0.jfiow.mongodb.net/Analytics?retryWrites=true&w=majority
+
+
+---
+
+apiVersion: v1
+kind: Service    
+metadata:               
+  name: ping-analytics
+spec:         
+  type: LoadBalancer
+  selector:
+    app: analytics-server 
+  ports:                         
+  - name: http
+    port: 3030
+    targetPort: 3030
